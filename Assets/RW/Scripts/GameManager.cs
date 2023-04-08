@@ -38,6 +38,14 @@ namespace RayWenderlich.SpaceInvadersUnity
         internal static GameManager Instance;
 
         [SerializeField] private AudioSource sfx;
+        [SerializeField] private GameObject explosionPrefab;
+        [SerializeField] private float explosionTime = 1f;
+        [SerializeField] private AudioClip explosionClip;
+        [SerializeField] private int maxLives = 3;
+        [SerializeField] private Text LivesLabel;
+        private int lives;
+
+       
 
         internal void PlaySfx(AudioClip clip) => sfx.PlayOneShot(clip);
 
@@ -47,6 +55,23 @@ namespace RayWenderlich.SpaceInvadersUnity
                 Instance = this;
             else if (Instance != this)
                 Destroy(gameObject);
+
+            lives = maxLives;
+            LivesLabel.text = $"Lives: {lives}";
+        }
+
+        internal void CreateExplosion(Vector2 position)
+        {
+            PlaySfx(explosionClip);
+
+            var explosion = Instantiate(explosionPrefab, position, Quaternion.Euler(0f, 0f, Random.Range(-180f, 180f)));
+            Destroy(explosion, explosionTime);
+        }
+
+        internal void UpdateLives()
+        {
+            lives = Mathf.Clamp(lives - 1, 0, maxLives);
+            LivesLabel.text = $"Lives: {lives}";
         }
     }
 }

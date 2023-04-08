@@ -229,6 +229,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sfx: {fileID: 16625295}
+  explosionPrefab: {fileID: 4586659686193129463, guid: 7f304fd316b6a2648b167f9246e5d0b6,
+    type: 3}
+  explosionTime: 1
+  explosionClip: {fileID: 8300000, guid: 32cfea82824f13045877b24d7d50326a, type: 3}
+  maxLives: 3
+  LivesLabel: {fileID: 1072051831}
 --- !u!82 &16625295
 AudioSource:
   m_ObjectHideFlags: 0
@@ -1640,6 +1646,9 @@ MonoBehaviour:
   coolDownTime: 0.5
   bulletPrefabl: {fileID: -2660408224735016589, guid: f7fa5c1eae2e03a48baa9de60893b07c,
     type: 3}
+  respawnTime: 2
+  sprite: {fileID: 666176963}
+  cannonCollider: {fileID: 1472441961}
 --- !u!61 &1472441961
 BoxCollider2D:
   m_ObjectHideFlags: 0

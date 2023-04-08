@@ -57,6 +57,7 @@ namespace RayWenderlich.SpaceInvadersUnity
         private void OnCollisionEnter2D(Collision2D collision)
         {
             DestroySelf();
+            GameManager.Instance.CreateExplosion(transform.position);
         }
     }
 }
