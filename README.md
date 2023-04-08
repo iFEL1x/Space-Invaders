@@ -3,7 +3,7 @@
 ## Описание проекта
 
 Данный проект является изучением статьи 
-***"How To Make A Game Like Bomberman With Unity"*** на сайте сообщества [Unity3DSchool.com](https://www.raywenderlich.com/)
+***"How to Make a Game Like Space Invaders"*** на сайте сообщества [Unity3DSchool.com](https://www.raywenderlich.com/)
 
 Проект собран в Unity3D с использованием языка программирование C# и принципов ООП
 
