@@ -1,4 +1,4 @@
-# <p align="center"> Bomberman DEMO</p>
+# <p align="center"> Space-Invaders</p>
 
 ## Описание проекта
 
