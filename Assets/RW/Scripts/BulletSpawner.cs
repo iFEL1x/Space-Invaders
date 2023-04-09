@@ -57,14 +57,29 @@ namespace RayWenderlich.SpaceInvadersUnity
 
             timer += Time.deltaTime;
             if(timer < currentTime)
-            {
                 return;
-            }
 
             Instantiate(bulletPrefab, spawnPoint.position, Quaternion.identity);
             GameManager.Instance.PlaySfx(shooting);
             timer = 0f;
             currentTime = Random.Range(minTime, maxTime);
+        }
+
+        private void OnCollisionEnter2D(Collision2D collision)
+        {
+            if (!collision.collider.GetComponent<Bullet>())
+                return;
+
+            GameManager.Instance.UpdateScore(InvaderSwarm.Instance.GetPoints(followTarget.gameObject.name));
+
+            InvaderSwarm.Instance.IncreaseDeathCount();
+
+            followTarget.GetComponentInChildren<SpriteRenderer>().enabled = false;
+            currentRow = currentRow - 1;
+            if (currentRow < 0)
+                gameObject.SetActive(false);
+            else
+                Setup();
         }
     }
 }

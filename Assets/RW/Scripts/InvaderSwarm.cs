@@ -45,7 +45,7 @@ namespace RayWenderlich.SpaceInvadersUnity
         internal static InvaderSwarm Instance;
 
 
-        [Header("Spawing")]
+        [Header("Spawning")]
         [SerializeField] private InvaderType[] invaderTypes;
         [SerializeField] private int columnCount = 11;
         [SerializeField] private int ySpacing;
@@ -53,8 +53,11 @@ namespace RayWenderlich.SpaceInvadersUnity
         [SerializeField] private Transform spawnStartPoint;
 
         [Space]
-        [Header("Movment")]
+        [Header("Movement")]
         [SerializeField] private float speedFactor = 10f;
+
+        [Space]
+        [SerializeField] private BulletSpawner bullerSpawnerPrefab;
 
         private Transform[,] invaders;
         private int rowCount;
@@ -63,30 +66,44 @@ namespace RayWenderlich.SpaceInvadersUnity
         private float maxX;
         private float currentX;
         private float xIncrement;
+        private int killCount;
+        private System.Collections.Generic.Dictionary<string, int> pointsMap;
 
-        [SerializeField] private BulletSpawner bullerSpawnerPrefab;
+        internal void IncreaseDeathCount()
+        {
+            killCount++;
+            if(killCount >= invaders.Length)
+            {
+                GameManager.Instance.TriggerGameOver(false);
+                return;
+            }
+        }
+
+        internal int GetPoints(string alienName)
+        {
+            if (pointsMap.ContainsKey(alienName))
+                return pointsMap[alienName];
+
+            return 0;
+        }
+
+       
 
         internal Transform GetInvader(int row, int column)
         {
             if (row < 0 || column < 0 || row >= invaders.GetLength(0) || column >= invaders.GetLength(1))
-            {
                 return null;
-            }
 
             return invaders[row, column];
-        }
-
+        }   
 
         private void Awake()
         {
             if(Instance == null)
-            {
                 Instance = this;
-            }
+
             else if(Instance != this)
-            {
                 Destroy(gameObject);
-            }
         }
 
         private void Start()
@@ -104,10 +121,13 @@ namespace RayWenderlich.SpaceInvadersUnity
             currentX = minX;
             invaders = new Transform[rowCount, columnCount];
 
+            pointsMap = new System.Collections.Generic.Dictionary<string, int>();
+
             int rowIndex = 0;
             foreach (var invaderType in invaderTypes)
             {
                 var invaderName = invaderType.name.Trim();
+                pointsMap[invaderName] = invaderType.points;
                 for(int i = 0, len = invaderType.rowCount; i < len; i++)
                 {
                     for(int j = 0; j < columnCount; j++)
@@ -157,13 +177,10 @@ namespace RayWenderlich.SpaceInvadersUnity
             {
                 currentX -= xIncrement;
                 if(currentX > minX)
-                {
                     MoveInvaders(-xIncrement, 0);
-                }
+
                 else
-                {
                     ChangeDirection();
-                }
             }
         }
 

@@ -43,6 +43,12 @@ namespace RayWenderlich.SpaceInvadersUnity
         [SerializeField] private AudioClip explosionClip;
         [SerializeField] private int maxLives = 3;
         [SerializeField] private Text LivesLabel;
+        [SerializeField] private MusicControl music;
+        [SerializeField] private Text scoreLabel;
+        [SerializeField] private GameObject gameOver;
+        [SerializeField] private GameObject allClear;
+        [SerializeField] private Button restartButton;
+        private int score;
         private int lives;
 
        
@@ -58,6 +64,18 @@ namespace RayWenderlich.SpaceInvadersUnity
 
             lives = maxLives;
             LivesLabel.text = $"Lives: {lives}";
+
+            score = 0;
+            scoreLabel.text = $"Score: {score}";
+            gameOver.gameObject.SetActive(false);
+            allClear.gameObject.SetActive(false);
+
+            restartButton.onClick.AddListener(() =>
+            {
+                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+                Time.timeScale = 1f;
+            });
+            restartButton.gameObject.SetActive(false);
         }
 
         internal void CreateExplosion(Vector2 position)
@@ -72,6 +90,27 @@ namespace RayWenderlich.SpaceInvadersUnity
         {
             lives = Mathf.Clamp(lives - 1, 0, maxLives);
             LivesLabel.text = $"Lives: {lives}";
+
+            if (lives > 0)
+                return;
+
+            TriggerGameOver();
+        }
+
+        internal void UpdateScore(int value)
+        {
+            score += value;
+            scoreLabel.text = $"Score: {score}";
+        }
+
+        internal void  TriggerGameOver(bool failure = true)
+        {
+            gameOver.SetActive(failure);
+            allClear.SetActive(!failure);
+            restartButton.gameObject.SetActive(true);
+
+            Time.timeScale = 0f;
+            music.StopPlaying();
         }
     }
 }

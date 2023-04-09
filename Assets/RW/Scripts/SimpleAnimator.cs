@@ -50,10 +50,8 @@ namespace RayWenderlich.SpaceInvadersUnity
         private void Update()
         {
             timer += Time.deltaTime;
-            if (timer < animationTime) 
-            {
+            if (timer < animationTime)
                 return;
-            }
 
             spriteRenderer.sprite = sprites[currentIndex++ % sprites.Length];
             timer = 0f;

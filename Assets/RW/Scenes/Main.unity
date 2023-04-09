@@ -235,6 +235,11 @@ MonoBehaviour:
   explosionClip: {fileID: 8300000, guid: 32cfea82824f13045877b24d7d50326a, type: 3}
   maxLives: 3
   LivesLabel: {fileID: 1072051831}
+  music: {fileID: 830995718}
+  scoreLabel: {fileID: 1030000417}
+  gameOver: {fileID: 500558181}
+  allClear: {fileID: 304893960}
+  restartButton: {fileID: 400145464}
 --- !u!82 &16625295
 AudioSource:
   m_ObjectHideFlags: 0
@@ -1289,6 +1294,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 12b7b778a7c407c40a84c6bb2947a133, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  source: {fileID: 830995716}
 --- !u!1 &1030000415
 GameObject:
   m_ObjectHideFlags: 0
