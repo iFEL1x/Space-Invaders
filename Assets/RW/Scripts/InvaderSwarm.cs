@@ -58,6 +58,11 @@ namespace RayWenderlich.SpaceInvadersUnity
 
         [Space]
         [SerializeField] private BulletSpawner bullerSpawnerPrefab;
+        [SerializeField] private Transform cannonPosition;
+        [Space]
+        [Header("Music")]
+        [SerializeField] private MusicControl musicControl;
+        private int tempKillCount;
 
         private Transform[,] invaders;
         private int rowCount;
@@ -68,52 +73,19 @@ namespace RayWenderlich.SpaceInvadersUnity
         private float xIncrement;
         private int killCount;
         private System.Collections.Generic.Dictionary<string, int> pointsMap;
-
-        internal void IncreaseDeathCount()
-        {
-            killCount++;
-            if(killCount >= invaders.Length)
-            {
-                GameManager.Instance.TriggerGameOver(false);
-                return;
-            }
-        }
-
-        internal int GetPoints(string alienName)
-        {
-            if (pointsMap.ContainsKey(alienName))
-                return pointsMap[alienName];
-
-            return 0;
-        }
-
-       
-
-        internal Transform GetInvader(int row, int column)
-        {
-            if (row < 0 || column < 0 || row >= invaders.GetLength(0) || column >= invaders.GetLength(1))
-                return null;
-
-            return invaders[row, column];
-        }   
-
-        private void Awake()
-        {
-            if(Instance == null)
-                Instance = this;
-
-            else if(Instance != this)
-                Destroy(gameObject);
-        }
+        private float minY;
+        private float currentY;
 
         private void Start()
         {
+            currentY = spawnStartPoint.position.y;
             minX = spawnStartPoint.position.x;
+            minY = cannonPosition.position.y;
 
             GameObject swarm = new GameObject { name = "Swarm" };
             Vector2 currentPos = spawnStartPoint.position;
 
-            foreach(var invaderType in invaderTypes)
+            foreach (var invaderType in invaderTypes)
             {
                 rowCount += invaderType.rowCount;
             }
@@ -128,9 +100,9 @@ namespace RayWenderlich.SpaceInvadersUnity
             {
                 var invaderName = invaderType.name.Trim();
                 pointsMap[invaderName] = invaderType.points;
-                for(int i = 0, len = invaderType.rowCount; i < len; i++)
+                for (int i = 0, len = invaderType.rowCount; i < len; i++)
                 {
-                    for(int j = 0; j < columnCount; j++)
+                    for (int j = 0; j < columnCount; j++)
                     {
                         var invader = new GameObject() { name = invaderName };
                         invader.AddComponent<SimpleAnimator>().sprites = invaderType.sprites;
@@ -160,11 +132,11 @@ namespace RayWenderlich.SpaceInvadersUnity
 
         private void FixedUpdate()
         {
-            xIncrement = speedFactor * Time.deltaTime;
+            xIncrement = speedFactor * musicControl.Tempo * Time.deltaTime;
             if (isMovingRight)
             {
                 currentX += xIncrement;
-                if(currentX < maxX)
+                if (currentX < maxX)
                 {
                     MoveInvaders(xIncrement, 0);
                 }
@@ -176,12 +148,54 @@ namespace RayWenderlich.SpaceInvadersUnity
             else
             {
                 currentX -= xIncrement;
-                if(currentX > minX)
+                if (currentX > minX)
                     MoveInvaders(-xIncrement, 0);
 
                 else
                     ChangeDirection();
             }
+        }
+
+        internal void IncreaseDeathCount()
+        {
+            killCount++;
+            if(killCount >= invaders.Length)
+            {
+                GameManager.Instance.TriggerGameOver(false);
+                return;
+            }
+
+            tempKillCount++;
+            if (tempKillCount < invaders.Length / musicControl.pitchChangeSteps)
+                return;
+
+            musicControl.IncreasePitch();
+            tempKillCount = 0;
+        }
+
+        internal int GetPoints(string alienName)
+        {
+            if (pointsMap.ContainsKey(alienName))
+                return pointsMap[alienName];
+
+            return 0;
+        }       
+
+        internal Transform GetInvader(int row, int column)
+        {
+            if (row < 0 || column < 0 || row >= invaders.GetLength(0) || column >= invaders.GetLength(1))
+                return null;
+
+            return invaders[row, column];
+        }   
+
+        private void Awake()
+        {
+            if(Instance == null)
+                Instance = this;
+
+            else if(Instance != this)
+                Destroy(gameObject);
         }
 
         private void MoveInvaders(float x, float y)
@@ -199,6 +213,10 @@ namespace RayWenderlich.SpaceInvadersUnity
         {
             isMovingRight = !isMovingRight;
             MoveInvaders(0, -ySpacing);
+
+            currentY -= ySpacing;
+            if (currentY < minY)
+                GameManager.Instance.TriggerGameOver();
         }
     }
 }

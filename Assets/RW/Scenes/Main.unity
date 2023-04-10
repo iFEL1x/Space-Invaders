@@ -198,6 +198,8 @@ MonoBehaviour:
   speedFactor: 10
   bullerSpawnerPrefab: {fileID: 6663010631795688966, guid: c862e47b042287d4ba9c8463da749eb2,
     type: 3}
+  cannonPosition: {fileID: 1472441959}
+  musicControl: {fileID: 830995718}
 --- !u!114 &16625293
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1295,6 +1297,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   source: {fileID: 830995716}
+  pitchChangeSteps: 5
+  maxPitch: 5.25
 --- !u!1 &1030000415
 GameObject:
   m_ObjectHideFlags: 0
