@@ -1,9 +1,13 @@
 # <p align="center"> Space-Invaders</p>
 
+<div align="Center">
+    <img src = https://github.com/iFEL1x/iFEL1x/blob/main/Resources/Screenshots/Screen(Space-Invaders)(0).jpg width="600">
+</div>
+
 ## Описание проекта
 
 Данный проект является изучением статьи 
-***"How to Make a Game Like Space Invaders"*** на сайте сообщества [Unity3DSchool.com](https://www.raywenderlich.com/)
+***"How to Make a Game Like Space Invaders"*** на сайте сообщества [www.kodeco.com](https://www.kodeco.com/)
 
 Проект собран в Unity3D с использованием языка программирование C# и принципов ООП
 
@@ -26,11 +30,30 @@ ___
 *Демонсрация кода:*
 
 ```C#
+    private void MoveInvaders(float x, float y)
+        {
+            for(int i = 0; i < rowCount; i++)
+            {
+                for(int j = 0; j <columnCount; j++)
+                {
+                    invaders[i, j].Translate(x, y, 0);
+                }
+            }
+        }
 
+        private void ChangeDirection()
+        {
+            isMovingRight = !isMovingRight;
+            MoveInvaders(0, -ySpacing);
+
+            currentY -= ySpacing;
+            if (currentY < minY)
+                GameManager.Instance.TriggerGameOver();
+        }
 ```
 
 **Основная задача проекта** - Изучение возможностей Unity3D и языка программирования С# и принципов ООП.
 
 *Демонстрация финальной части игрового процесса:*
 
-![Space-Invaders]()
+![Space-Invaders](https://github.com/iFEL1x/iFEL1x/blob/main/Resources/Image/Gif/mp4%20to%20GIT(Space-Invaders).gif)
