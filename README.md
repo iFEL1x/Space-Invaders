@@ -1,7 +1,7 @@
 # <p align="center"> Space-Invaders</p>
 
 <div align="Center">
-    <img src = https://github.com/iFEL1x/iFEL1x/blob/main/Resources/Screenshots/Screen(Space-Invaders)(0).jpg width="600">
+    <img src = https://github.com/iFEL1x/iFEL1x/blob/main/Resources/Screenshots/Screen(Space-Invaders)(0).png width="600">
 </div>
 
 ## Описание проекта
